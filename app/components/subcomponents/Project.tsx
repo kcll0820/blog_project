@@ -14,13 +14,15 @@ const ProjectSection = forwardRef<HTMLDivElement>((_, ref) => {
       { threshold: 0.5 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const current = sectionRef.current; // ✅ ref 값 고정
+
+    if (current) {
+      observer.observe(current);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (current) {
+        observer.unobserve(current);
       }
     };
   }, []);
@@ -69,7 +71,7 @@ const ProjectSection = forwardRef<HTMLDivElement>((_, ref) => {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className=" bg-white/80 rounded-lg shadow-lg p-2"
+                    className="bg-white/80 rounded-lg shadow-lg p-2"
                   >
                     {link.label}
                   </a>
@@ -82,5 +84,7 @@ const ProjectSection = forwardRef<HTMLDivElement>((_, ref) => {
     </section>
   );
 });
+
+ProjectSection.displayName = "ProjectSection";
 
 export default ProjectSection;

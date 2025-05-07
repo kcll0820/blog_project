@@ -26,4 +26,7 @@ const ContactSection = forwardRef<HTMLDivElement>((_, ref) => {
   );
 });
 
+// ✅ Display name 설정
+ContactSection.displayName = "ContactSection";
+
 export default ContactSection;

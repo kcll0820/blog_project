@@ -27,5 +27,6 @@ const MainSection = forwardRef<HTMLDivElement>((_, ref) => {
     </section>
   );
 });
+MainSection.displayName = "MainSection";
 
 export default MainSection;

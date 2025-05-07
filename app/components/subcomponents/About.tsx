@@ -11,32 +11,34 @@ const AboutSection = forwardRef<HTMLDivElement>((_, ref) => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Intersection Observer 초기화
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setInView(true); // 화면에 보일 때 애니메이션 트리거
+            setInView(true);
           } else {
-            setInView(false); // 화면을 벗어나면 애니메이션 초기화
+            setInView(false);
           }
         });
       },
       {
-        threshold: 0.5, // 요소가 50% 이상 화면에 보일 때 트리거
+        threshold: 0.5,
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    // ✅ ref 값을 변수에 저장하여 cleanup에서도 동일 참조 사용
+    const current = sectionRef.current;
+
+    if (current) {
+      observer.observe(current);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (current) {
+        observer.unobserve(current);
       }
     };
-  }, []); // 컴포넌트 마운트 시 애니메이션 초기화
+  }, []);
 
   return (
     <section
@@ -57,7 +59,7 @@ const AboutSection = forwardRef<HTMLDivElement>((_, ref) => {
           </p>
         </div>
 
-        <div className="text-white flex items-center gap-10">
+        <div className="text-white flex items-center gap-10 flex-wrap justify-center">
           {[
             { icon: <FaHtml5 className="size-20" />, label: "HTML" },
             { icon: <FaCss3Alt className="size-20" />, label: "CSS" },
@@ -80,7 +82,7 @@ const AboutSection = forwardRef<HTMLDivElement>((_, ref) => {
                 inView ? "animate-fade-in" : ""
               }`}
               style={{
-                animationDelay: `${index * 0.2}s`, // 0.2초씩 딜레이
+                animationDelay: `${index * 0.2}s`,
               }}
             >
               {tech.icon}
@@ -92,7 +94,7 @@ const AboutSection = forwardRef<HTMLDivElement>((_, ref) => {
               inView ? "animate-fade-in" : ""
             }`}
             style={{
-              animationDelay: "1.6s", // 마지막 항목 0.2초 더 늦게
+              animationDelay: "1.6s",
             }}
           >
             <span className="text-2xl italic tracking-[-0.075em]">Express</span>
@@ -104,19 +106,22 @@ const AboutSection = forwardRef<HTMLDivElement>((_, ref) => {
         @keyframes fade-in {
           0% {
             opacity: 0;
-            transform: scale(0.9); /* 크기를 약간 줄여서 시작 */
+            transform: scale(0.9);
           }
           100% {
             opacity: 1;
-            transform: scale(1); /* 원래 크기로 돌아옴 */
+            transform: scale(1);
           }
         }
         .animate-fade-in {
-          animation: fade-in 0.5s ease-in-out forwards; /* 부드러운 'ease-in-out' 타이밍 함수 */
+          animation: fade-in 0.5s ease-in-out forwards;
         }
       `}</style>
     </section>
   );
 });
+
+// ✅ Display name 설정 (react/display-name 경고 해결)
+AboutSection.displayName = "AboutSection";
 
 export default AboutSection;
